@@ -240,7 +240,7 @@ class LibraryPersistenceTest {
 
         val itemIdsByText = repository.observeCollectionContent(collectionId).first()
             .associate { it.dhikr.arabicText to it.item.id }
-        val items = { repository.observeCollectionContent(collectionId).first() }
+        val items: suspend () -> List<*> = { repository.observeCollectionContent(collectionId).first() }
 
         repository.moveCollectionItem(collectionId, itemIdsByText.getValue("গ"), MoveDirection.UP)
         // Expected: specificity by arabic text: ক, গ, খ
@@ -325,7 +325,7 @@ class LibraryPersistenceTest {
         context2.deleteDatabase(dbName)
     }
 
-    private fun curatedEntity(id: String, arabicText: String) = DhikrEntity(
+    private fun curatedEntity(id: String, arabicText: String = "curated-arabic") = DhikrEntity(
         id = id,
         arabicText = arabicText,
         transliteration = "curated-translit",
