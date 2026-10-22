@@ -239,8 +239,8 @@ class LibraryPersistenceTest {
         val collectionId = repository.observeCollections().first().single().id
         ids.forEach { id -> repository.addToCollection(collectionId, id) }
 
-        val itemIdsByText = repository.observeCollectionContent(collectionId).first()
-            .associate { it.dhikr.arabicText to it.item.id }
+        val rows: List<CollectionDhikr> = repository.observeCollectionContent(collectionId).first()
+        val itemIdsByText = rows.associate { it.dhikr.arabicText to it.item.id }
         val items: suspend () -> List<CollectionDhikr> = { repository.observeCollectionContent(collectionId).first() }
 
         repository.moveCollectionItem(collectionId, itemIdsByText.getValue("গ"), MoveDirection.UP)
