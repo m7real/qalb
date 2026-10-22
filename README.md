@@ -37,6 +37,7 @@ CI workflow) in one commit and must be confirmed by a green Actions run.
 | Gradle (CI pins 8.14.3) | 8.14.3 | AGP 8.13 needs Gradle ≥ 8.13; AGP 8.x does not support Gradle 9; KGP 2.3 works with Gradle up to 9.0 |
 | Kotlin / Compose compiler plugin | 2.3.21 | Vendor-matched pair with AGP 8.13.2 (per android.com Kotlin-support table); Kotlin 2.4 would require AGP 9.x-era R8 |
 | Compose BOM | 2026.06.01 | Maps compose 1.11.4 / material3 1.4.0 / ripple 1.11.4 — newest generation whose AAR metadata accepts compileSdk 36 + AGP 8.13 (compose 1.12.x requires API 37 + AGP 9.1) |
+| androidx material-icons-core | 1.7.8 | Final release of the frozen icons-core line; no longer mapped by the 2026 BOM, so declared explicitly. UI is deliberately limited to core icons so material-icons-extended is never pulled |
 | androidx navigation-compose | 2.9.8 | Newest navigation accepting compileSdk 36 + AGP 8.13 (2.10.0 requires API 37 + AGP 9.1, verified via AAR metadata) |
 | androidx activity-compose | 1.12.4 | Covers compileSdk 36; newer 1.13.0 drags lifecycle 2.11.0 transitively (AGP 9.1 requirement) |
 | androidx core-ktx | 1.18.0 | Newest core-ktx accepting compileSdk 36 + AGP 8.13 (1.19.x requires API 37 + AGP 9.1) |

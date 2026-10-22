@@ -242,7 +242,7 @@ class LibraryRepository(
         renumber(reordered.map { it.id }, collectionId)
     }
 
-    private fun renumber(itemIdsInOrder: List<String>, collectionId: String) {
+    private suspend fun renumber(itemIdsInOrder: List<String>, collectionId: String) {
         // Defensive: drop ids that disappeared concurrently, then renumber what came back.
         val stillThere = collectionDao.getItemsNow(collectionId).map { it.id }.toSet()
         var order = 0

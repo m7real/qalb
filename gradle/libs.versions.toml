@@ -38,6 +38,11 @@ buildTools = "35.0.0"
 # while AGP remains 8.13. Upgrading to AGP 9 + compileSdk 37 is a deliberate,
 # separate migration, not a routine version bump.
 composeBom = "2026.06.01"
+# material-icons-core is FROZEN at 1.7.8 (final release, 2025-02) and is no
+# longer mapped by the Compose BOM; declare it explicitly.
+# Icon usage is deliberately limited to this core set (search/add/delete/edit/
+# arrows/favourite) so the heavyweight material-icons-extended is never needed.
+composeIconsCore = "1.7.8"
 activityCompose = "1.12.4"
 coreKtx = "1.18.0"
 navigationCompose = "2.9.8"
@@ -55,6 +60,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "composeIconsCore" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
