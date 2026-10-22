@@ -1,0 +1,42 @@
+{
+  "seedSchemaVersion": 1,
+  "generatedAt": "2026-10-22",
+  "dhikrs": [
+    {
+      "id": "sample-placeholder-1",
+      "origin": "CURATED",
+      "reviewStatus": "NEEDS_REVIEW",
+      "arabicText": "النص العربي غير متوفر بعد — بانتظار المراجعة",
+      "transliteration": null,
+      "bengaliMeaning": "(যাচাইয়ের অপেক্ষায়: স্থানধারক ১)",
+      "notes": "নমুনা স্থানধারক নিবন্ধ — প্রকৃত আজকার নয়। যোগ্য পর্যালোচক সুত্রসহ পাঠ স্থাপন করার আগে এটি যাচাইকৃত হিসেবে দেখানো হবে না।",
+      "plannedRepeatCount": null,
+      "occasionType": null,
+      "sources": []
+    },
+    {
+      "id": "sample-placeholder-2",
+      "origin": "CURATED",
+      "reviewStatus": "NEEDS_REVIEW",
+      "arabicText": "النص العربي غير متوفر بعد — بانتظار المراجعة",
+      "transliteration": null,
+      "bengaliMeaning": "(যাচাইয়ের অপেক্ষায়: স্থানধারক ২)",
+      "notes": "নমুনা স্থানধারক নিবন্ধ — প্রকৃত আজকার নয়। যোগ্য পর্যালোচক সুত্রসহ পাঠ স্থাপন করার আগে এটি যাচাইকৃত হিসেবে দেখানো হবে না।",
+      "plannedRepeatCount": null,
+      "occasionType": null,
+      "sources": []
+    },
+    {
+      "id": "sample-placeholder-3",
+      "origin": "CURATED",
+      "reviewStatus": "NEEDS_REVIEW",
+      "arabicText": "النص العربي غير متوفر بعد — بانتظار المراجعة",
+      "transliteration": null,
+      "bengaliMeaning": "(যাচাইয়ের অপেক্ষায়: স্থানধারক ৩)",
+      "notes": "নমুনা স্থানধারক নিবন্ধ — প্রকৃত আজকার নয়। যোগ্য পর্যালোচক সুত্রসহ পাঠ স্থাপন করার আগে এটি যাচাইকৃত হিসেবে দেখানো হবে না।",
+      "plannedRepeatCount": null,
+      "occasionType": null,
+      "sources": []
+    }
+  ]
+}

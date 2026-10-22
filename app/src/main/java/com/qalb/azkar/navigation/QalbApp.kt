@@ -14,12 +14,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.navOptions
 import com.qalb.azkar.R
+import com.qalb.azkar.feature.library.CollectionDetailScreen
+import com.qalb.azkar.feature.library.CollectionsScreen
+import com.qalb.azkar.feature.library.DhikrDetailScreen
+import com.qalb.azkar.feature.library.DhikrEditorScreen
 import com.qalb.azkar.feature.library.LibraryScreen
 import com.qalb.azkar.feature.settings.SettingsScreen
 import com.qalb.azkar.feature.tasbih.TasbihScreen
@@ -39,6 +45,26 @@ private val topLevelDestinations = listOf(
     TopLevelDestination("settings", R.string.nav_settings, R.drawable.ic_nav_settings),
 )
 
+private const val ROUTE_TODAY = "today"
+private const val ROUTE_LIBRARY = "library"
+private const val ROUTE_TASBIH = "tasbih"
+private const val ROUTE_SETTINGS = "settings"
+private const val ROUTE_COLLECTIONS = "collections"
+private const val ROUTE_COLLECTION = "collection"
+private const val ROUTE_DETAIL = "detail"
+private const val ROUTE_EDITOR = "editor"
+
+/** Route prefixes that belong to the Library tab for bottom-bar selection. */
+private val libraryStackPrefixes =
+    listOf(ROUTE_LIBRARY, ROUTE_COLLECTIONS, ROUTE_COLLECTION, ROUTE_DETAIL, ROUTE_EDITOR)
+
+private fun selectedTopLevelRoute(currentRoute: String?): String? {
+    if (currentRoute == null) return null
+    topLevelDestinations.firstOrNull { it.route == currentRoute }?.let { return it.route }
+    if (libraryStackPrefixes.any { currentRoute.startsWith(it) }) return ROUTE_LIBRARY
+    return null
+}
+
 private fun tabNavOptions(navController: NavController): NavOptions =
     navOptions {
         popUpTo(navController.graph.findStartDestination().id) {
@@ -56,11 +82,11 @@ fun QalbApp() {
         bottomBar = {
             NavigationBar {
                 val backStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = backStackEntry?.destination?.route
+                val selectedRoute = selectedTopLevelRoute(backStackEntry?.destination?.route)
 
                 topLevelDestinations.forEach { destination ->
                     NavigationBarItem(
-                        selected = currentRoute == destination.route,
+                        selected = selectedRoute == destination.route,
                         onClick = {
                             navController.navigate(destination.route, tabNavOptions(navController))
                         },
@@ -79,13 +105,60 @@ fun QalbApp() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "today",
+            startDestination = ROUTE_TODAY,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable("today") { TodayScreen() }
-            composable("library") { LibraryScreen() }
-            composable("tasbih") { TasbihScreen() }
-            composable("settings") { SettingsScreen() }
+            composable(ROUTE_TODAY) { TodayScreen() }
+            composable(ROUTE_LIBRARY) {
+                LibraryScreen(
+                    onOpenDetail = { id -> navController.navigate("$ROUTE_DETAIL/$id") },
+                    onAddNew = { navController.navigate(ROUTE_EDITOR) },
+                    onOpenCollections = { navController.navigate(ROUTE_COLLECTIONS) },
+                )
+            }
+            composable(ROUTE_COLLECTIONS) {
+                CollectionsScreen(
+                    onOpenCollection = { id -> navController.navigate("$ROUTE_COLLECTION/$id") },
+                    onBack = { navController.popBackStack() },
+                )
+            }
+            composable(
+                route = "$ROUTE_COLLECTION/{collectionId}",
+                arguments = listOf(navArgument("collectionId") { type = NavType.StringType }),
+            ) { entry ->
+                CollectionDetailScreen(
+                    collectionId = entry.arguments?.getString("collectionId").orEmpty(),
+                    onBack = { navController.popBackStack() },
+                    onOpenDhikr = { id -> navController.navigate("$ROUTE_DETAIL/$id") },
+                )
+            }
+            composable(
+                route = "$ROUTE_DETAIL/{dhikrId}",
+                arguments = listOf(navArgument("dhikrId") { type = NavType.StringType }),
+            ) { entry ->
+                DhikrDetailScreen(
+                    dhikrId = entry.arguments?.getString("dhikrId").orEmpty(),
+                    onBack = { navController.popBackStack() },
+                    onEdit = { id -> navController.navigate("$ROUTE_EDITOR/$id") },
+                )
+            }
+            composable(ROUTE_EDITOR) {
+                DhikrEditorScreen(
+                    existingDhikrId = null,
+                    onBack = { navController.popBackStack() },
+                )
+            }
+            composable(
+                route = "$ROUTE_EDITOR/{dhikrId}",
+                arguments = listOf(navArgument("dhikrId") { type = NavType.StringType }),
+            ) { entry ->
+                DhikrEditorScreen(
+                    existingDhikrId = entry.arguments?.getString("dhikrId"),
+                    onBack = { navController.popBackStack() },
+                )
+            }
+            composable(ROUTE_TASBIH) { TasbihScreen() }
+            composable(ROUTE_SETTINGS) { SettingsScreen() }
         }
     }
 }

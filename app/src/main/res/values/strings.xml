@@ -13,4 +13,80 @@
     <string name="nav_library">লাইব্রেরি</string>
     <string name="nav_tasbih">তাসবিহ</string>
     <string name="nav_settings">সেটিংস</string>
+
+    <!-- Library -->
+    <string name="library_search_hint">অনুসন্ধান করুন…</string>
+    <string name="filter_all">সব</string>
+    <string name="filter_verified">যাচাইকৃত</string>
+    <string name="filter_needs_review">যাচাই প্রয়োজন</string>
+    <string name="filter_user">ব্যক্তিগত</string>
+    <string name="filter_favourites">প্রিয়</string>
+    <string name="badge_verified_curated">যাচাইকৃত সূত্রসহ</string>
+    <string name="badge_needs_review">যাচাই প্রয়োজন</string>
+    <string name="badge_user_created">ব্যক্তিগত যিকির</string>
+    <string name="library_add_entry">নতুন যিকির</string>
+    <string name="library_open_collections">সংগ্রহ</string>
+    <string name="library_empty">কোনো যিকির নেই। ব্যক্তিগত যিকির যোগ করতে পারেন।</string>
+    <string name="library_empty_search">অনুসন্ধানে কিছু পাওয়া যায়নি।</string>
+
+    <!-- Collections -->
+    <string name="collections_title">সংগ্রহসমূহ</string>
+    <string name="collection_create">নতুন সংগ্রহ</string>
+    <string name="collection_name_hint">সংগ্রহের নাম</string>
+    <string name="collections_empty">কোনো সংগ্রহ নেই। নতুন সংগ্রহ তৈরি করুন।</string>
+    <string name="collection_add_dhikr">যিকির যোগ করুন</string>
+    <string name="collection_pick_dhikr">যিকির নির্বাচন করুন</string>
+    <string name="collection_empty">এই সংগ্রহে কোনো যিকির নেই।</string>
+    <string name="collection_move_up">উপরে সরান</string>
+    <string name="collection_move_down">নিচে সরান</string>
+    <string name="collection_remove_item">সংগ্রহ থেকে সরান</string>
+    <string name="collection_delete">সংগ্রহ মুছে ফেলুন</string>
+    <string name="confirm_delete_collection">এই সংগ্রহ মুছে ফেলবেন? শুধু সংগ্রহটি ও তার অন্তর্ভুক্তি মুছে যাবে — যিকিরগুলো লাইব্রেরিতে থেকে যাবে।</string>
+
+    <!-- Detail -->
+    <string name="detail_favourite">প্রিয়</string>
+    <string name="detail_unfavourite">প্রিয় থেকে বাদ</string>
+    <string name="detail_edit">সম্পাদনা</string>
+    <string name="detail_delete">মুছে ফেলুন</string>
+    <string name="detail_note_title">ব্যক্তিগত নোট</string>
+    <string name="detail_note_hint">ব্যক্তিগত নোট লিখুন…</string>
+    <string name="detail_note_save">সংরক্ষণ</string>
+    <string name="detail_sources_title">সূত্র</string>
+    <string name="detail_no_sources">সূত্র যোগ করা হয়নি।</string>
+    <string name="detail_repeat_count">পুনরাবৃত্তি: %1$d</string>
+    <string name="detail_occasion">উপলক্ষ: %1$s</string>
+    <string name="detail_source_verified">সূত্র যাচাইকৃত</string>
+    <string name="detail_source_needs_review">সূত্র যাচাই প্রয়োজন</string>
+    <string name="detail_curated_readonly_note">এটি কিউরেটেড যিকির — পাঠ পরিবর্তনযোগ্য নয়। নিজের নোট ও প্রিয় চিহ্ন পরিবর্তন করা যায়।</string>
+
+    <!-- Editor -->
+    <string name="editor_title_new">নতুন ব্যক্তিগত যিকির</string>
+    <string name="editor_title_edit">যিকির সম্পাদনা</string>
+    <string name="editor_arabic_hint">আরবি পাঠ</string>
+    <string name="editor_transliteration_hint">উচ্চারণ (ঐচ্ছিক)</string>
+    <string name="editor_meaning_hint">বাংলা অর্থ (ঐচ্ছিক)</string>
+    <string name="editor_notes_hint">নোট (ঐচ্ছিক)</string>
+    <string name="editor_repeat_hint">পুনরাবৃত্তির সংখ্যা (ঐচ্ছিক)</string>
+    <string name="editor_occasion_label">উপলক্ষ</string>
+    <string name="editor_occasion_none">নির্ধারিত নয়</string>
+    <string name="editor_save">সংরক্ষণ</string>
+    <string name="editor_cancel">বাতিল</string>
+    <string name="editor_user_note">ব্যক্তিগত যিকির — এটি কখনো যাচাইকৃত/সুন্নাহ হিসেবে দেখানো হবে না।</string>
+
+    <!-- Occasions -->
+    <string name="occasion_anytime">যেকোনো সময়</string>
+    <string name="occasion_morning_window">সকালবেলা</string>
+    <string name="occasion_evening_window">সন্ধ্যাবেলা</string>
+    <string name="occasion_after_each_fard">প্রতি ফরজ নামাজের পরে</string>
+    <string name="occasion_after_fajr">ফজরের পরে</string>
+    <string name="occasion_after_maghrib">মাগরিবের পরে</string>
+    <string name="occasion_before_sleep">ঘুমানোর আগে</string>
+    <string name="occasion_custom">কাস্টম</string>
+
+    <!-- Generic -->
+    <string name="action_ok">ঠিক আছে</string>
+    <string name="action_yes">হ্যাঁ</string>
+    <string name="action_no">না</string>
+    <string name="action_back">ফিরে যান</string>
+    <string name="confirm_delete_dhikr">ব্যক্তিগত যিকিরটি মুছে ফেলবেন?</string>
 </resources>

@@ -40,14 +40,18 @@ CI workflow) in one commit and must be confirmed by a green Actions run.
 | androidx navigation-compose | 2.9.8 | Newest navigation accepting compileSdk 36 + AGP 8.13 (2.10.0 requires API 37 + AGP 9.1, verified via AAR metadata) |
 | androidx activity-compose | 1.12.4 | Covers compileSdk 36; newer 1.13.0 drags lifecycle 2.11.0 transitively (AGP 9.1 requirement) |
 | androidx core-ktx | 1.18.0 | Newest core-ktx accepting compileSdk 36 + AGP 8.13 (1.19.x requires API 37 + AGP 9.1) |
-| androidx lifecycle-runtime-ktx | 2.10.0 | Newest stable lifecycle line accepting AGP ≤ 8.13 (2.11.0 requires AGP 9.1) |
+| androidx lifecycle-runtime-ktx | 2.10.0 | Newest stable lifecycle line accepting AGP ≤ 8.13 (2.11.0 requires AGP 9.1); same version serves lifecycle-runtime-compose + lifecycle-viewmodel-compose |
+| androidx Room (+ room-ktx, room-compiler via KSP) | 2.8.5 | Newest stable Room release (analysis verified 2026-10-22); works with compileSdk 36 / AGP 8.13 |
+| KSP (Room codegen) | 2.3.12 | New standalone KSP versioning on the Kotlin 2.3 line; must track the Kotlin 2.3.x used |
+| Robolectric (unit tests) | 4.17 | Newest stable; enables real Room/asset tests on JVM runners (android-all fetched at test time) |
+| androidx test-core (tests) | 1.7.0 | Latest stable (1.8.0 is alpha — avoided per stable-only policy) |
 | compileSdk / targetSdk | 36 | AGP 8.13 supports up to API 36.1; matches current Play target requirement |
 | minSdk | 24 | Broad device coverage for the target user profile |
 | build-tools (CI installs same) | 35.0.0 | AGP 8.13 documented default build-tools |
 | JUnit | 4.13.2 | Stable unit-test framework for JVM tests |
 
-Library versions that must be added later (Room/KSP in Milestone 3) are added to
-the catalog and this table at that time.
+Library versions added with Milestone 3 (Room / KSP / Robolectric / test-core)
+are recorded above; future milestones append new rows here as they are needed.
 
 ## ☁️ How to verify a change — the only build loop you need
 
