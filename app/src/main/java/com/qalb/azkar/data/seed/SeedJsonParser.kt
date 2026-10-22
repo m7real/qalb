@@ -113,8 +113,13 @@ object SeedJsonParser {
 
     private fun optNullableString(obj: JSONObject, field: String): String? {
         if (obj.isNull(field)) return null
-        val value = obj.optString(field, null)
-        return value?.trim()?.takeIf { it.isNotEmpty() }
+        // org.json's two-argument optString treats "absent", JSON null and
+        // empty string identically as "" (the JSON-null case is already
+        // handled above), so "" is a faithful fallback — passing a null
+        // literal instead triggers a pointless Kotlin/Java platform-type
+        // inference warning.
+        val value = obj.optString(field, "")
+        return value.trim().takeIf { it.isNotEmpty() }
     }
 
     private fun parseInt(obj: JSONObject, field: String, required: Boolean): Int? {

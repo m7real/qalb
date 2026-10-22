@@ -18,6 +18,13 @@
 #   the release notes, update in a separate commit, and require a green run.
 # - Workflow permissions are minimal: contents: read. No secrets, no signing,
 #   no Play Store publishing in the MVP.
+# - The `cache` action (added after a Maven Central HTTP 429 failure on
+#   2026-10-23) caches Robolectric's android-all-instrumented runtime jars,
+#   which download into ~/.m2/repository at test-execution time — OUTSIDE
+#   Gradle's dependency resolution, so the gradle/actions/setup-gradle cache
+#   (~/.gradle/caches) does not cover them. Gradle also retries 429/5xx itself
+#   (default 3 attempts); the cache removes the need for cold re-downloads
+#   entirely. Bump the key suffix (-v1) when the Robolectric version changes.
 # =============================================================================
 
 name: android-ci
@@ -107,6 +114,22 @@ jobs:
             echo "cmd=gradle --no-daemon" >> "$GITHUB_OUTPUT"
             echo "No wrapper: using pinned gradle from setup-gradle"
           fi
+
+      # ------------------------------------------------------------------
+      # Robolectric fetches its instrumented Android framework jars
+      # (android-all-instrumented-*.jar and the intellijdeps/asm OSGi jars)
+      # directly from Maven Central into ~/.m2/repository when tests first
+      # execute. These are NOT part of Gradle dependency resolution, so the
+      # setup-gradle cache never saves them; without this step every CI run
+      # cold-downloads them in a parallel burst and can hit Maven Central
+      # HTTP 429 throttling. Uses the stable major tag v6 (latest release
+      # v6.1.0, verified against the official release page on 2026-10-23).
+      # ------------------------------------------------------------------
+      - name: Cache Robolectric runtime jars (.m2)
+        uses: actions/cache@v6
+        with:
+          path: ~/.m2/repository
+          key: robolectric-android-all-${{ runner.os }}-v1
 
       - name: Unit tests
         run: ${{ steps.gradle-cmd.outputs.cmd }} :app:testDebugUnitTest --stacktrace
