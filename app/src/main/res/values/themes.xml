@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme: a plain platform theme; Compose Material 3 paints all styling. -->
+    <style name="Theme.Qalb" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/qalb_background</item>
+    </style>
+</resources>

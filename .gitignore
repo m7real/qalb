@@ -1,4 +1,28 @@
-docs/
-prompts/
-agents.md
-README-START-HERE.md
+# Local SDK path (machine-specific; never commit)
+local.properties
+
+# Gradle build outputs and caches
+.gradle/
+build/
+
+# Android build artifacts
+captures/
+*.apk
+*.aab
+
+# Kotlin/Compose compiler caches
+.kotlin/
+
+# IDE machine-specific files
+.idea/
+*.iml
+.vscode/
+
+# Signing and secrets (never commit)
+*.jks
+*.keystore
+keystore.properties
+
+# OS noise
+.DS_Store
+Thumbs.db

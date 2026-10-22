@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Default UI language is Bengali (docs/PRODUCT_SPEC.md §2).
+    Curated religious adhkar text is NOT stored here — it arrives as versioned
+    seed data in Milestone 3, kept separate from UI strings
+    (docs/AZKAR_CONTENT_POLICY.md).
+-->
+<resources>
+    <string name="app_name">কলব</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_today">আজ</string>
+    <string name="nav_library">লাইব্রেরি</string>
+    <string name="nav_tasbih">তাসবিহ</string>
+    <string name="nav_settings">সেটিংস</string>
+</resources>

@@ -1,0 +1,53 @@
+# =============================================================================
+# Qalb version registry — SINGLE SOURCE OF TRUTH for every tool and library
+# version used by this project.
+#
+# Compatibility verified on 2026-10-22 against:
+#   - https://developer.android.com/build/releases/agp-8-13-0-release-notes
+#     (AGP 8.13: Gradle >= 8.13, JDK 17, build-tools default 35.0.0, max API 36.1;
+#      8.13.2 uses R8 8.13.19 which supports Kotlin 2.3)
+#   - https://developer.android.com/build/kotlin-support
+#     (Kotlin 2.3 requires AGP 8.2.2-8.13; Kotlin 2.4 would require AGP 9.x-era R8)
+#   - https://kotlinlang.org/docs/whatsnew23.html
+#     (Kotlin 2.3 line compatible with Gradle 7.6.3-9.0/9.x)
+#   - Google Maven (dl.google.com/android/maven2) metadata for library versions
+#
+# CI pins the SAME Gradle version (8.14.3) via gradle/actions/setup-gradle.
+# Any version change must update: this file, README.md, and the CI workflow,
+# in one commit, verified by a green GitHub Actions run.
+# =============================================================================
+
+[versions]
+# Build tools
+agp = "8.13.2"
+kotlin = "2.3.21"
+# Earliest validated requirement is Gradle 8.13; pinned Gradle = 8.14.3 (see README + CI)
+gradlePin = "8.14.3"
+javaMajor = "17"
+compileSdk = "36"
+targetSdk = "36"
+minSdk = "24"
+buildTools = "35.0.0"
+
+# Libraries (all stable releases; alpha/beta/rc intentionally avoided)
+composeBom = "2026.09.00"
+activityCompose = "1.13.0"
+coreKtx = "1.19.1"
+navigationCompose = "2.10.2"
+lifecycleRuntimeKtx = "2.11.0"
+junit = "4.13.2"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

@@ -1,0 +1,128 @@
+# =============================================================================
+# Qalb cloud CI — the ONLY place where Android build/test/lint/apk tasks run.
+#
+# Design notes (recorded so a future reader does not have to re-derive them):
+# - No Gradle wrapper is committed, so the pinned Gradle distribution is
+#   provisioned here via gradle/actions/setup-gradle and invoked directly.
+#   If gradlew ever appears in the repo root, the "Select Gradle invocation"
+#   step automatically switches to it; setup-gradle validates wrapper
+#   checksums. One command tactic, one policy, no double maintenance.
+# - gradle-version is extracted from gradle/libs.versions.toml (gradlePin), so
+#   the catalog stays the single source of truth. The sync-check step fails the
+#   build if the SDK package pins here ever drift from the catalog.
+# - Action major tags (v7/v6/v4...) below were verified against their official
+#   release pages on 2026-10-22: actions/checkout v7.0.1, actions/setup-java v6,
+#   gradle/actions/setup-gradle v6, android-actions/setup-android v4.0.4,
+#   actions/upload-artifact v7. Policy: pin major tags, not commit SHAs, since
+#   SHAs cannot be reliably verified offline. When adopting a new major, verify
+#   the release notes, update in a separate commit, and require a green run.
+# - Workflow permissions are minimal: contents: read. No secrets, no signing,
+#   no Play Store publishing in the MVP.
+# =============================================================================
+
+name: android-ci
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Unit tests, lint, debug APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v7
+
+      # ------------------------------------------------------------------
+      # Version-pin consistency guard: fails fast if the workflow ever
+      # drifts from gradle/libs.versions.toml.
+      # ------------------------------------------------------------------
+      - name: Verify SDK/Gradle pins match the version catalog
+        run: |
+          set -eu
+          catalog_compile_sdk="$(grep -E '^compileSdk = ' gradle/libs.versions.toml | grep -oE '[0-9]+')"
+          catalog_build_tools="$(grep -E '^buildTools = ' gradle/libs.versions.toml | grep -oE '[0-9.]+')"
+          workflow_compile_sdk="$(grep -oE 'platforms;android-[0-9]+' .github/workflows/android-ci.yml | grep -oE '[0-9]+' | head -n1)"
+          workflow_build_tools="$(grep -oE 'build-tools;[0-9.]+' .github/workflows/android-ci.yml | grep -oE '[0-9.]+' | head -n1)"
+          echo "catalog: compileSdk=$catalog_compile_sdk buildTools=$catalog_build_tools"
+          echo "workflow: compileSdk=$workflow_compile_sdk buildTools=$workflow_build_tools"
+          if [ "$catalog_compile_sdk" != "$workflow_compile_sdk" ]; then
+            echo "::error::workflow 'platforms;android-*' pin does not match libs.versions.toml compileSdk" >&2
+            exit 1
+          fi
+          if [ "$catalog_build_tools" != "$workflow_build_tools" ]; then
+            echo "::error::workflow 'build-tools;*' pin does not match libs.versions.toml buildTools" >&2
+            exit 1
+          fi
+
+      - name: Set up JDK 17 (required by AGP 8.13.2)
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK (cmdline tools, licenses, platform-tools)
+        uses: android-actions/setup-android@v4
+
+      # Exact packages required by compileSdk / buildToolsVersion in
+      # app/build.gradle.kts (both read from gradle/libs.versions.toml).
+      # Keep this line in sync with the catalog; the sync-check step above
+      # enforces it.
+      - name: Install exact SDK platform and build-tools
+        run: sdkmanager --install "platforms;android-36" "build-tools;35.0.0"
+
+      # Single source of truth: the Gradle pin lives in the version catalog.
+      - name: Read pinned Gradle version from the catalog
+        id: gradle-pin
+        run: |
+          echo "version=$(grep -E '^gradlePin = ' gradle/libs.versions.toml | grep -oE '"[0-9.]+"' | tr -d '"')" >> "$GITHUB_OUTPUT"
+
+      # Downloads and caches the distribution; also validates wrapper checksum
+      # when a wrapper is later committed.
+      - name: Set up Gradle (${{ steps.gradle-pin.outputs.version }})
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: "${{ steps.gradle-pin.outputs.version }}"
+
+      - name: Select Gradle invocation (wrapper if present, else pinned gradle)
+        id: gradle-cmd
+        run: |
+          if [ -f gradlew ]; then
+            chmod +x gradlew
+            echo "cmd=./gradlew" >> "$GITHUB_OUTPUT"
+            echo "Wrapper detected: using ./gradlew"
+          else
+            echo "cmd=gradle --no-daemon" >> "$GITHUB_OUTPUT"
+            echo "No wrapper: using pinned gradle from setup-gradle"
+          fi
+
+      - name: Unit tests
+        run: ${{ steps.gradle-cmd.outputs.cmd }} :app:testDebugUnitTest --stacktrace
+
+      - name: Android lint
+        run: ${{ steps.gradle-cmd.outputs.cmd }} :app:lintDebug --stacktrace
+
+      - name: Assemble debug APK
+        run: ${{ steps.gradle-cmd.outputs.cmd }} :app:assembleDebug --stacktrace
+
+      # Uploaded only when every gate above succeeded (steps fail the job).
+      - name: Upload debug APK artifact
+        if: success()
+        uses: actions/upload-artifact@v7
+        with:
+          name: qalb-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
