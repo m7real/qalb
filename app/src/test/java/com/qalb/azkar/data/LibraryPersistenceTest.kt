@@ -7,6 +7,7 @@ import com.qalb.azkar.data.local.AzkarDatabase
 import com.qalb.azkar.data.local.DhikrEntity
 import com.qalb.azkar.data.local.SourceReferenceEntity
 import com.qalb.azkar.data.local.toDomain
+import com.qalb.azkar.data.repository.CollectionDhikr
 import com.qalb.azkar.data.repository.LibraryFilter
 import com.qalb.azkar.data.repository.LibraryRepository
 import com.qalb.azkar.data.repository.MoveDirection
@@ -240,7 +241,7 @@ class LibraryPersistenceTest {
 
         val itemIdsByText = repository.observeCollectionContent(collectionId).first()
             .associate { it.dhikr.arabicText to it.item.id }
-        val items: suspend () -> List<*> = { repository.observeCollectionContent(collectionId).first() }
+        val items: suspend () -> List<CollectionDhikr> = { repository.observeCollectionContent(collectionId).first() }
 
         repository.moveCollectionItem(collectionId, itemIdsByText.getValue("গ"), MoveDirection.UP)
         // Expected: specificity by arabic text: ক, গ, খ
