@@ -30,11 +30,18 @@ minSdk = "24"
 buildTools = "35.0.0"
 
 # Libraries (all stable releases; alpha/beta/rc intentionally avoided)
-composeBom = "2026.09.00"
-activityCompose = "1.13.0"
-coreKtx = "1.19.1"
-navigationCompose = "2.10.2"
-lifecycleRuntimeKtx = "2.11.0"
+# NOTE: these are the newest androidx releases whose embedded AAR metadata
+# (minCompileSdk / minAndroidGradlePluginVersion, verified 2026-10-22) accepts
+# compileSdk 36 + AGP 8.13.x. The next generation (compose 1.12.x via BOM
+# 2026.09.00, navigation 2.10.x, core-ktx 1.19.x, lifecycle 2.11.x, activity 1.13+)
+# is compiled against API 37 and requires AGP >= 9.1 — do NOT bump to those
+# while AGP remains 8.13. Upgrading to AGP 9 + compileSdk 37 is a deliberate,
+# separate migration, not a routine version bump.
+composeBom = "2026.06.01"
+activityCompose = "1.12.4"
+coreKtx = "1.18.0"
+navigationCompose = "2.9.8"
+lifecycleRuntimeKtx = "2.10.0"
 junit = "4.13.2"
 
 [libraries]

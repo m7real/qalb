@@ -36,11 +36,11 @@ CI workflow) in one commit and must be confirmed by a green Actions run.
 | Android Gradle Plugin | 8.13.2 | Last stable 8.x; avoids the AGP 9 new-DSL/built-in-Kotlin transition; Kotlin 2.3 officially supported (R8 8.13.19) |
 | Gradle (CI pins 8.14.3) | 8.14.3 | AGP 8.13 needs Gradle ≥ 8.13; AGP 8.x does not support Gradle 9; KGP 2.3 works with Gradle up to 9.0 |
 | Kotlin / Compose compiler plugin | 2.3.21 | Vendor-matched pair with AGP 8.13.2 (per android.com Kotlin-support table); Kotlin 2.4 would require AGP 9.x-era R8 |
-| Compose BOM | 2026.09.00 | Latest stable BOM at scaffold creation (Google Maven) |
-| androidx navigation-compose | 2.10.2 | Latest stable |
-| androidx activity-compose | 1.13.0 | Latest stable (1.14 is alpha — avoided) |
-| androidx core-ktx | 1.19.1 | Latest stable |
-| androidx lifecycle-runtime-ktx | 2.11.0 | Latest stable (2.12 is alpha — avoided) |
+| Compose BOM | 2026.06.01 | Maps compose 1.11.4 / material3 1.4.0 / ripple 1.11.4 — newest generation whose AAR metadata accepts compileSdk 36 + AGP 8.13 (compose 1.12.x requires API 37 + AGP 9.1) |
+| androidx navigation-compose | 2.9.8 | Newest navigation accepting compileSdk 36 + AGP 8.13 (2.10.0 requires API 37 + AGP 9.1, verified via AAR metadata) |
+| androidx activity-compose | 1.12.4 | Covers compileSdk 36; newer 1.13.0 drags lifecycle 2.11.0 transitively (AGP 9.1 requirement) |
+| androidx core-ktx | 1.18.0 | Newest core-ktx accepting compileSdk 36 + AGP 8.13 (1.19.x requires API 37 + AGP 9.1) |
+| androidx lifecycle-runtime-ktx | 2.10.0 | Newest stable lifecycle line accepting AGP ≤ 8.13 (2.11.0 requires AGP 9.1) |
 | compileSdk / targetSdk | 36 | AGP 8.13 supports up to API 36.1; matches current Play target requirement |
 | minSdk | 24 | Broad device coverage for the target user profile |
 | build-tools (CI installs same) | 35.0.0 | AGP 8.13 documented default build-tools |
