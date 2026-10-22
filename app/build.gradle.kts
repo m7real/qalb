@@ -39,6 +39,11 @@ android {
     buildFeatures {
         compose = true
     }
+
+    // Required for Robolectric tests that read app resources/assets.
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
 }
 
 kotlin {
@@ -51,11 +56,6 @@ kotlin {
 // and becomes the baseline for future versioned migrations.
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
-}
-
-testOptions {
-    // Required for Robolectric tests that read app resources/assets.
-    unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
