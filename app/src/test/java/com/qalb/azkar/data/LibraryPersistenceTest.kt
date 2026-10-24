@@ -7,7 +7,7 @@ import com.qalb.azkar.data.local.AzkarDatabase
 import com.qalb.azkar.data.local.DhikrEntity
 import com.qalb.azkar.data.local.SourceReferenceEntity
 import com.qalb.azkar.data.local.toDomain
-import com.qalb.azkar.data.repository.CollectionDhikr
+import com.qalb.azkar.domain.model.CollectionDhikr
 import com.qalb.azkar.data.repository.LibraryFilter
 import com.qalb.azkar.data.repository.LibraryRepository
 import com.qalb.azkar.data.repository.MoveDirection
